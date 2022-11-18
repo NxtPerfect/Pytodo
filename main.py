@@ -57,6 +57,12 @@ class LinkedList:
         raise Exception(f"Node with data '{target_node_data}' wasn't found")
 
 
+LinkedList.__doc__ = "Main class used to operate on nodes storing tasks data"
+LinkedList.add_first.__doc__ = "Adds element on the first position"
+LinkedList.add_last.__doc__ = "Adds element on the last position"
+LinkedList.remove_node.__doc__ = "Removes node with provided data"
+
+
 class Node:
     data = ''
     next = None
