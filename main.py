@@ -7,56 +7,63 @@
 import tkinter
 from tkinter import BooleanVar, IntVar, StringVar, ttk
 
-__todo_file__ = "todo.txt"
+
+class LinkedList:
+    def __init__(self) -> None:
+        self.head = None
+
+    def __repr__(self) -> str:
+        node = self.head
+        nodes = []
+        while node is not None:
+            nodes.append(node.data)
+            node = node.next
+        nodes.append("None")
+        return " -> ".join(nodes)
+
+    def __iter__(self):
+        node = self.head
+        while node is not None:
+            yield node
+            node = node.next
+
+    def add_first(self, node):
+        node.next = self.head
+        self.head = node
+
+    def add_last(self, node):
+        if self.head is None:
+            self.head = node
+            return
+        for current_node in self:
+            pass
+        current_node.next = node
+
+    def remove_node(self, target_node_data):
+        if self.head is None:
+            raise Exception("List is empty")
+
+        if self.head.data == target_node_data:
+            self.head = self.head.next
+            return
+
+        previous_node = self.head
+        for node in self:
+            if node.data == target_node_data:
+                previous_node.next = node.next
+                return
+            previous_node = node
+
+        raise Exception(f"Node with data '{target_node_data}' wasn't found")
 
 
-def read_from_file(line: int):
-    try:
-        with open(__todo_file__, 'r', 0, "UTF-8") as file:
-            return file.readline(line)
-    except PermissionError:
-        return "Couldn't read from file, maybe it doesn't exist"
+class Node:
+    data = ''
+    next = None
 
-
-def write_to_file(name: str, description: str):
-    try:
-        with open(__todo_file__, 'a', 0, "UTF-8") as file:
-            with open(__todo_file__, 'r', 0, "UTF-8") as fr:
-                identification = len(fr.readlines())
-            file.write(
-                f"{identification}. {name.lower()}; {description.lower()}")
-        return "Saved"
-    except PermissionError:
-        return "Couldn't save to file, maybe no permissions to do so"
-
-
-def add_task(name: str, description: str):
-    try:
-        write_to_file(name, description)
-        return "Task added"
-    except PermissionError:
-        return "Couldn't add task"
-
-
-def remove_task(content: str):
-    try:
-        with open(__todo_file__, "r", 0, "UTF-8") as file:
-            lines = file.readlines()
-        with open(__todo_file__, "w", 0, "UTF-8") as file:
-            for line in lines:
-                if line.strip("\n") != content.lower():
-                    file.write(line)
-        return "Task removed"
-    except PermissionError:
-        return "Couldn't remove task"
-
-
-def complete_task(content: str):
-    try:
-        remove_task(content)
-        return "Task added"
-    except PermissionError:
-        return "Couldn't complete task"
+    def __init__(self, __title="Title", __description="Description") -> None:
+        self.data = "\\Title// " + __title + "\\Description// " + __description
+        self.next = None
 
 
 if __name__ == "__main__":
